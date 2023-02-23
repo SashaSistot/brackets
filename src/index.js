@@ -4,39 +4,25 @@ module.exports = function check(str, bracketsConfig) {
 }
 
 function checkBracketsInStr(arr, bracketsConfig) {
-for (i = 0; i < bracketsConfig.length; i++) {
+  for (let i = 0; i < bracketsConfig.length; i++) {
 
-  if (bracketsConfig[i][0] == bracketsConfig[i][1]) {
+    if (bracketsConfig[i][0] == bracketsConfig[i][1]) {
 
-    let equalBrackets = arr.filter(element => (element === bracketsConfig[i][0]));
-    if (equalBrackets.length % 2 !== 0) return false;
-
-  } else {
-
-    let differentBrackets = arr.filter(element => (element === bracketsConfig[i][0] || element === bracketsConfig[i][1]));
-
-    if (differentBrackets.length % 2 !== 0) return false;
-    let currentBracket = 0;
-    for(let j = 0; j < differentBrackets.length; j++) {
+      let equalBrackets = arr.filter(element => (element === bracketsConfig[i][0]));
+      bracketsConfig.splice(i, 1);
+      if (equalBrackets.length % 2 !== 0) return false;
       
-     if (differentBrackets[j] === bracketsConfig[i][0]) {
-
-      currentBracket++;
-
-     } else if (differentBrackets[j] === bracketsConfig[i][1] && differentBrackets[j - 1] === bracketsConfig[i][0]) {
-
-      currentBracket--;
-      differentBrackets.splice(j - 1, 2);
-      j = j - 2;
-
-     } else {
-
-      currentBracket++;
-
-     }
     }
-    if (currentBracket > 0) return false
+  
   }
-}
+  let currentBrackets = 0;
+  for (let j = 0; j < arr.length; j++) {
+    for (let i = 0; i < bracketsConfig.length; i++) {
+      if (arr[j] === bracketsConfig[i][0]) currentBrackets++;
+      if (arr[j] === bracketsConfig[i][1]) currentBrackets--;
+      if (currentBrackets < 0) return false;
+    }
+  }
+  if (currentBrackets !== 0) return false;
   return true;
 }
